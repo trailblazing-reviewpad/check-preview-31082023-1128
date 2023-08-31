@@ -1,0 +1,27 @@
+checks:
+  many-comments:
+    parameters:
+      max-comments: 3
+    severity: medium
+    activation: on
+
+  non-conventional-commits:
+    severity: low
+    activation: on
+
+  large:
+    parameters:
+      max-lines: 40
+    severity: medium
+    activation: on
+
+workflows:
+  - name: non-conventional-commit-wkflow
+    trigger-on-check: non-conventional-commits
+    run:
+      - $failCheckStatus("merge blocked for compliance reasons")
+
+  - name: large-wkflow
+    trigger-on-check: large
+    run:
+      - $info("This pull request is too large; please break it up")
